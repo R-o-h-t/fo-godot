@@ -9,6 +9,5 @@ func _ready() -> void:
   # Initialize the actor's movement component
   if movement_component:
     movement_component.actor = self
-    movement_component._ready()
   else:
-    push_error("MovementComponent is not assigned to the Actor.")
+    push_error("Actor requires a MovementComponent to function properly.")

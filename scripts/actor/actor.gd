@@ -5,6 +5,7 @@ extends CharacterBody2D
 
 @export var speed: float = 2.0
 
+
 func _ready() -> void:
   # Initialize the actor's movement component
   if movement_component:

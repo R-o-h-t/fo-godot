@@ -9,6 +9,9 @@ var AddInputAction = preload("res://scripts/util/add_input_action.gd")
 
 @export var active_layer: GridLayer
 
+@export var path_line_color: Color = Color(1, 0, 0, 0.5)
+var path_line: Line2D
+
 func _ready() -> void:
   if not movement_component:
     push_error("MoveGrid requires a MovementComponent to function.")
@@ -25,6 +28,13 @@ func _ready() -> void:
   # Initialize the movement component with the player actor
   movement_component.grid = self
   movement_component._ready()
+
+  # add a Line2D for path visualization
+  path_line = Line2D.new()
+  path_line.default_color = path_line_color
+  path_line.width = 2.0
+  path_line.visible = false
+  add_child(path_line)
 
   # Initialize custom input actions
   _init_custom_input_actions()
@@ -94,3 +104,25 @@ func get_mouse_to_grid_position() -> Vector2:
   # Convert the mouse position to grid coordinates
   var grid_coord = active_layer.local_to_map(local_mouse_position)
   return grid_coord
+
+
+func get_is_path_visible() -> bool:
+  return path_line.visible
+
+func show_path(path: Array[Vector2]) -> void:
+  if not path or path.size() == 0:
+    path_line.visible = false
+    return
+
+  path_line.clear_points()
+  for point in path:
+    path_line.add_point(active_layer.map_to_local(point))
+
+  path_line.visible = true
+  print("Path shown on grid: ", path)
+
+
+func hide_path() -> void:
+  path_line.clear_points()
+  path_line.visible = false
+  print("Path hidden from grid.")

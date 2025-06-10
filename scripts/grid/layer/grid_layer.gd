@@ -3,6 +3,9 @@ extends TileMapLayer
 
 @export var objects: Array[CollisionObject2D] = []
 
+
+var astar_grid: AStar2DHex
+
 func _ready() -> void:
   if not objects:
     push_error("GridLayer requires at least one CollisionObject2D to function properly.")
@@ -15,6 +18,7 @@ func _ready() -> void:
       return
 
   print("GridLayer is ready with ", objects.size(), " objects.")
+  astar_grid = AStar2DHex.new(self)
   _reload_all_objects_zindex()
 
 
@@ -72,3 +76,8 @@ func _get_z_index_at_position(cell_position: Vector2) -> int:
   var new_z_index = int((cell_position.x - used_rect.position.x) / used_rect.size.x * 100)
   print("Calculated Z index at cell_position ", cell_position, " is ", new_z_index)
   return new_z_index
+
+
+func get_connected_cells(cell_position: Vector2i) -> Array[Vector2i]:
+  # TODO implement using the object obstacles
+  return get_surrounding_cells(cell_position)

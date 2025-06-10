@@ -1,0 +1,2 @@
+class_name GridObject
+extends CollisionObject2D
